@@ -24,12 +24,22 @@
 
 // export default App;
 
-import Login from "./Components/LoginForm";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./styles.css";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginForm from './Components/LoginForm';
+import RegisterForm from './Components/RegisterForm';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles.css';
 
 export default function App() {
-  return <Login />;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
+      </Routes>
+    </Router>
+  );
 }
 
 
