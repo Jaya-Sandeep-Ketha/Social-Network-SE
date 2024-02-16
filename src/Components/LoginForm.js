@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import "./LoginForm.css";
 import { Link, useNavigate } from 'react-router-dom';
-
+import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import app from "./firebase"
 import BackgroundImage from "../assets/images/background.jpg";
 import Logo from "../assets/images/logo.png";
 
@@ -14,6 +15,59 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+
+  const GoogleSignIn = async (event) => {
+
+    const provider = new GoogleAuthProvider();
+
+    const auth = getAuth(app);
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  }
+
+ 
+  const signInWithFacebook = async (event) => {
+    const provider = new FacebookAuthProvider();
+
+    const auth = getAuth(app);
+    
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        const user = result.user;
+        // Access token if needed: const token = FacebookAuthProvider.credentialFromResult(result).accessToken;
+        // Perform actions with the user's info here
+        console.log("Facebook sign in success", user);
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = FacebookAuthProvider.credentialFromError(error);
+        console.error("Error during Facebook sign in", errorCode, errorMessage);
+      });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -69,12 +123,12 @@ const Login = () => {
         <img className="img-thumbnail mx-auto d-block mb-2" src={Logo} alt="logo" />
         <div className="h4 mb-2 text-center">Sign In</div>
 
-        <Button variant="outline-primary" className="mb-2 w-100 google-sign-in">
+        <Button variant="outline-primary" className="mb-2 w-100 google-sign-in" onClick={ GoogleSignIn }>
           <FontAwesomeIcon icon={faGoogle} className="social-icon" />
           Sign in with Google
         </Button>
 
-        <Button variant="outline-primary" className="mb-2 w-100 facebook-sign-in">
+        <Button variant="outline-primary" className="mb-2 w-100 facebook-sign-in" onClick={ signInWithFacebook }>
           <FontAwesomeIcon icon={faFacebook} className="social-icon" />
           Sign in with Facebook
         </Button>
