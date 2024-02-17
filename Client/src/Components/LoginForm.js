@@ -78,7 +78,7 @@ const Login = () => {
   
     // Prepare the data to be sent
     const loginData = {
-      username: inputUsername,
+      userId: inputUsername,
       password: inputPassword,
     };
   
