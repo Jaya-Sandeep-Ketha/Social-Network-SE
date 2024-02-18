@@ -72,18 +72,16 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-  
-    // Define the API endpoint
-    const loginUrl = 'http://localhost:3000/login';
-  
-    // Prepare the data to be sent
+
+    // Replace 'http://localhost:3000/login' with your actual login endpoint
+    const loginUrl = `${process.env.REACT_APP_API_URL}/login`;
+
     const loginData = {
       userId: inputUsername,
       password: inputPassword,
     };
-  
+
     try {
-      // Send a POST request to the backend
       const response = await fetch(loginUrl, {
         method: 'POST',
         headers: {
@@ -91,27 +89,22 @@ const Login = () => {
         },
         body: JSON.stringify(loginData),
       });
-  
+
+      const data = await response.json();
+
       if (response.ok) {
-        const data = await response.json();
-        // Handle login success
-        console.log('Login successful:', data);
-        alert()
-        // Redirect user to their specific account
-        navigate(`/home/${data.userId}`, { state: { user: data.user } }); // Assuming userId is returned in the response
+        localStorage.setItem("token", data.token); // Store JWT token
+        navigate(`/home/${data.userId}`);
       } else {
-        // Handle errors or unsuccessful login attempts
-        setShow(true);
-        console.log('Login failed:', response.statusText);
+        setShow(true); // Show error alert
       }
     } catch (error) {
-      // Handle network or other errors
-      console.error('Login error:', error);
+      setShow(true); // Show error alert
     } finally {
       setLoading(false);
     }
   };
-
+  
   return (
     <div
       className="sign-in__wrapper"
