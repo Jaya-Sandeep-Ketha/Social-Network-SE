@@ -101,7 +101,7 @@ app.post('/login', async (req, res) => {
         return res.status(400).send('Incorrect password');
       }
   
-      res.status(200).send('Login successful');
+      res.status(200).json({ message: 'Login successful', userId: user.userId });
     } catch (error) {
       console.error('Error during login:', error);
       res.status(500).send('Error during login');

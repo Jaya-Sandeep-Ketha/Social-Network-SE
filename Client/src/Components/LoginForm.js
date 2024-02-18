@@ -98,7 +98,7 @@ const Login = () => {
         console.log('Login successful:', data);
         alert()
         // Redirect user to their specific account
-        navigate(`/account/${data.userId}`); // Assuming userId is returned in the response
+        navigate(`/home/${data.userId}`, { state: { user: data.user } }); // Assuming userId is returned in the response
       } else {
         // Handle errors or unsuccessful login attempts
         setShow(true);

@@ -28,6 +28,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginForm from './Components/LoginForm';
 import RegisterForm from './Components/RegisterForm';
+import HomePage from './Components/HomePage'; // Import the HomePage component
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
@@ -37,9 +38,9 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
+        <Route path="/home/:userId" element={<HomePage />} /> {/* Add this line for your Home page route */}
       </Routes>
     </Router>
   );
 }
-
 
